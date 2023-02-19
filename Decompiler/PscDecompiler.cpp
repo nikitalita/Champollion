@@ -1453,6 +1453,9 @@ void Decompiler::PscDecompiler::cleanUpTree(Node::BasePtr program)
                 return node->getConstant().getType() == Pex::ValueType::Identifier;
             })
             .transform([&] (Node::Constant* node) {
+                // get the constant value as an identifier
+                m_IdsInUse.push_back(toIdentifier(node->getConstant()));
+
                 return std::make_shared<Node::IdentifierString>(node->getBegin(), getVarName(node->getConstant().getId()));
             })
             .on(program);
@@ -1822,4 +1825,8 @@ void Decompiler::PscDecompiler::addLineMapping(size_t decompiledLine, std::vecto
 
 Decompiler::PscDecompiler::DebugLineMap &Decompiler::PscDecompiler::getLineMap() {
   return m_LineMap;
+}
+
+Decompiler::PscDecompiler::IdentifierList &Decompiler::PscDecompiler::getIdsInUse() {
+  return m_IdsInUse;
 }

@@ -40,10 +40,17 @@ void Decompiler::PscCodeGenerator::newLine()
         }
         m_ExperimentalSyntaxWarning.clear();
     }
-    auto nums = getDebugInfoLineNumbers(minIpForCurrentLine, maxIpForCurrentLine);
+    auto currentDebugLineNos = getDebugInfoLineNumbers(minIpForCurrentLine, maxIpForCurrentLine);
     resetIpsForCurrentLine();
+    if (m_LastLineNumbers.size() > 0 && currentDebugLineNos.size() > 0 && currentDebugLineNos.back() - m_LastLineNumbers.back() > 1) {
+      // If there are > 1 lines between the last line number, add empty lines
+      for (int i = 0; i < currentDebugLineNos.back() - m_LastLineNumbers.back() - 1; i++) {
+        m_Decompiler->push_back("");
+      }
+    }
     m_Decompiler->push_back(m_Result.str());
-    m_Decompiler->addLineMapping(m_Decompiler->size() - 1, nums);
+    m_Decompiler->addLineMapping(m_Decompiler->size() - 1, currentDebugLineNos);
+    m_LastLineNumbers = currentDebugLineNos;
 
     m_Result = std::ostringstream();
     for (auto i = 0; i < m_Level; ++i)

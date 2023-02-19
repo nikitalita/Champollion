@@ -25,6 +25,7 @@ class PscDecompiler :
 {
 public:
     typedef std::map<size_t, std::vector<uint16_t>> DebugLineMap;
+    typedef std::vector<Pex::StringTable::Index> IdentifierList;
 
     PscDecompiler(const Pex::Function &function, const Pex::Object &object,
                   const Pex::DebugInfo::FunctionInfo *debugInfo, bool commentAsm, bool traceDecompilation,
@@ -36,6 +37,8 @@ public:
     const Pex::DebugInfo::FunctionInfo & getDebugInfo();
     void addLineMapping(size_t decompiledLine, std::vector<uint16_t> &originalLines);
     DebugLineMap &getLineMap();
+    IdentifierList &getIdsInUse();
+
 protected:
 
 
@@ -90,6 +93,7 @@ protected:
 
     // Map of decompiled lines to the range of (potentially multiple) original lines that were in the debug info
     DebugLineMap m_LineMap;
+    IdentifierList m_IdsInUse;
 
     void rebuildLocks(Node::BasePtr &program);
     void RemoveUnlocksFromBody(Node::BasePtr &body, const Node::BasePtr &matchingLock);

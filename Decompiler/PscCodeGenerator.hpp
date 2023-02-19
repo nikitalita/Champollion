@@ -56,6 +56,7 @@ protected:
     std::uint8_t m_Level{ 0 };
     std::vector<std::string> m_ExperimentalSyntaxWarning{};
     Decompiler::PscDecompiler* m_Decompiler;
+    std::vector<std::uint16_t> m_LastLineNumbers{};
 
     std::vector<uint16_t> getDebugInfoLineNumbers(int64_t begin, int64_t end);
     void resetIpsForCurrentLine();
