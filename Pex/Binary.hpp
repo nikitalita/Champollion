@@ -46,7 +46,7 @@ public:
 
     ScriptType getGameType() const;
 
-    void sort();
+    void sort(bool sortById = false);
     
 protected:
     friend FileReader;
